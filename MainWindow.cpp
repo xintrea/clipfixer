@@ -2,6 +2,8 @@
 #include <QClipboard>
 #include <QInputDialog>
 #include <QFile>
+#include <QTextTable>
+#include <QMimeData>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -85,16 +87,20 @@ void MainWindow::saveFormats(QString text)
 }
 
 
-void MainWindow::on_viewBufferButton_clicked()
+QString MainWindow::getHtmlFromClipboard()
 {
-  // QMessageBox msgBox;
-  // msgBox.setText("The document has been modified.");
-  // msgBox.exec();
-
   QClipboard *clipboard = QApplication::clipboard();
 
   QString subType="html";
   QString html=clipboard->text(subType, QClipboard::Clipboard);
+
+  return html;
+}
+
+
+void MainWindow::on_viewBufferButton_clicked()
+{
+  QString html=getHtmlFromClipboard();
 
   ui->sourceFormattingText->setText(html);
   ui->sourceText->setPlainText(html);
@@ -111,7 +117,7 @@ void MainWindow::on_setupDataFormatButton_clicked()
   bool result;
   QString text = QInputDialog::getMultiLineText(this,
       "Допустимые форматы",
-      "Форматы в виде строк: Наименование, кол-во столбцов для столбца 1, кол-востолбцов для столбца 2, и. т. д",
+      "Один формат на одной строке: Наименование, кол-во столбцов для столбца 1, кол-во столбцов для столбца 2, и. т. д",
       firstText,
       &result);
 
@@ -123,3 +129,66 @@ void MainWindow::on_setupDataFormatButton_clicked()
 
 }
 
+
+void MainWindow::on_processingButton_clicked()
+{
+  QString html=getHtmlFromClipboard();
+
+  // Создается документ с содержимым, взятым из HTML-представления буфера обмена
+  QTextDocument doc;
+  doc.setHtml(html);
+
+  QTextCursor cursor(&doc);
+
+  cursor.movePosition(QTextCursor::WordRight);
+
+  QTextTable *table=cursor.currentTable();
+
+  if(table==0)
+  {
+    QMessageBox msgBox;
+    msgBox.setText("Буфер обмена не содержит выделенных ячеек.");
+    msgBox.exec();
+    return;
+  }
+
+  // Запоминается ширина и высота таблицы
+  int startTableColumns=table->columns();
+  int startTableRows=table->rows();
+
+  // Список ширин столбцов (сколько столбцов надо объединять)
+  QStringList columnWidthListLine = currentFormat.split(",");
+  columnWidthListLine.removeFirst(); // Удаляется название формата
+
+  // Преобразование в список int
+  QList<int> columnWidthList;
+  foreach(const QString &widthLine, columnWidthListLine)
+    columnWidthList << widthLine.toInt();
+
+  // Объединение столбцов
+  int i=0;
+  foreach(const int &currentWidth, columnWidthList)
+  {
+    table->mergeCells(0, i, startTableRows, currentWidth);
+
+    i=i+currentWidth;
+  }
+
+  // ui->translateBufferText->setText(doc.toHtml());
+
+  QClipboard *clipboard = QApplication::clipboard();
+  QMimeData *data = new QMimeData;
+  data->setHtml( doc.toHtml() );
+  clipboard->setMimeData(data);
+}
+
+
+// Если поменялось значение в выпадающем списке форматов
+void MainWindow::on_currentDataFormatComboBox_currentTextChanged(const QString &arg1)
+{
+  currentFormat=arg1;
+
+  // QMessageBox msgBox;
+  // msgBox.setText("Установлен новый формат "+currentFormat);
+  // msgBox.exec();
+}

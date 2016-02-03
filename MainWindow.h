@@ -20,15 +20,20 @@ private slots:
 
   void on_setupDataFormatButton_clicked();
 
+  void on_processingButton_clicked();
+
+  void on_currentDataFormatComboBox_currentTextChanged(const QString &arg1);
+
 private:
   Ui::MainWindow *ui;
 
   QString formatFileName;
   QStringList formats;
+  QString currentFormat;
 
   void readFormats();
-
   void saveFormats(QString text);
+  QString getHtmlFromClipboard();
 };
 
 #endif // MAINWINDOW_H
