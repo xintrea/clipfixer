@@ -214,15 +214,12 @@ void MainWindow::on_currentDataFormatComboBox_currentTextChanged(const QString &
   // msgBox.exec();
 }
 
-void MainWindow::on_translateBufferButton_clicked()
-{
-
-}
 
 void MainWindow::on_closeButton_clicked()
 {
   exit(0);
 }
+
 
 void MainWindow::on_additionToolsButton_clicked()
 {
