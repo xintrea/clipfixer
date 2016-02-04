@@ -224,7 +224,15 @@ void MainWindow::on_closeButton_clicked()
 void MainWindow::on_additionToolsButton_clicked()
 {
   if(ui->additionToolsWidget->isVisible())
+  {
     ui->additionToolsWidget->hide();
+
+    this->resize(1,1);
+  }
   else
+  {
     ui->additionToolsWidget->show();
+
+    // this->resize(1,1);
+  }
 }
