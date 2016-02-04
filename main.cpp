@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include <QApplication>
 
-// v.0.3
+// v.0.4
 
 int main(int argc, char *argv[])
 {
