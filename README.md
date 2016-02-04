@@ -39,3 +39,14 @@ Sample Qt project for demonstration work with clipboard
 
 Пользователь имеет возможность самостоятельно создавать форматы смет. Так же в программе предусмотрен отладочный режим, 
 который позволяет просматривать исходное и преобразованное содержимое буфера обмена.
+
+
+**Скриншоты:**
+
+Стандартный вид:
+
+![Standart window](/misc/pic/windows_standart.png)
+
+Расширенный вид:
+
+![Full window](/misc/pic/windows_full.png)
