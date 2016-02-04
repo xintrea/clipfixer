@@ -57,6 +57,7 @@ void MainWindow::readFormats()
       formats << format.trimmed();
   }
 
+  // Выпадающий список на экране заполняется считанными форматами
   ui->currentDataFormatComboBox->clear();
   ui->currentDataFormatComboBox->addItems(formats);
 
@@ -165,6 +166,7 @@ void MainWindow::on_processingButton_clicked()
   foreach(const QString &widthLine, columnWidthListLine)
     columnWidthList << widthLine.toInt();
 
+
   // Объединение столбцов
   int i=0;
   foreach(const int &currentWidth, columnWidthList)
@@ -174,12 +176,29 @@ void MainWindow::on_processingButton_clicked()
     i=i+currentWidth;
   }
 
-  // ui->translateBufferText->setText(doc.toHtml());
+  // При объединении столбцов получается одна ячейка в столбце на все строки стоблца,
+  // поэтому строки кроме верхней (с номером 0) надо удалить
+  // for(int i=0; i<startTableRows-1; i++)
+  //   table->removeRows(1, 1); // Приходится делать цикл, так как removeRows(1, startTableRows-1) некорректно работает при rowspan
 
+  // Предыдущее действие только избавило от rowspan, но не удалило строки
+  // Однако следующее удаление строк приводит к сегфолту widows-библиотеки, которое не отлавливается Qt дебаггером
+  // table->removeRows(1, startTableRows-1);
+
+  QString resultHTML=doc.toHtml();
+
+  resultHTML=resultHTML.replace(QRegExp("colspan=\"\\d*\""), "");
+  resultHTML=resultHTML.replace(QRegExp("rowspan=\"\\d*\""), "");
+  resultHTML=resultHTML.replace(QRegExp("<tr><\\/tr>"), "");
+
+
+  // Преобразованный документ вносится в буфер обмена
   QClipboard *clipboard = QApplication::clipboard();
   QMimeData *data = new QMimeData;
-  data->setHtml( doc.toHtml() );
+  data->setHtml( resultHTML );
   clipboard->setMimeData(data);
+
+  ui->translateBufferText->setPlainText( resultHTML );
 }
 
 

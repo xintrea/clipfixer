@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1008</width>
-    <height>790</height>
+    <width>1009</width>
+    <height>782</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,12 +83,12 @@
      <rect>
       <x>520</x>
       <y>10</y>
-      <width>211</width>
+      <width>141</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Настройка допустимых форматов</string>
+     <string>Настройка форматов</string>
     </property>
    </widget>
    <widget class="QComboBox" name="currentDataFormatComboBox">
@@ -143,7 +143,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1008</width>
+     <width>1009</width>
      <height>22</height>
     </rect>
    </property>
@@ -153,7 +153,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
