@@ -35,9 +35,15 @@ private:
   QStringList formats;
   QString currentFormat;
 
+  int firstWindowH;
+  int firstWindowW;
+
   void readFormats();
   void saveFormats(QString text);
   QString getHtmlFromClipboard();
+
+  void additionToolsWidgetHide();
+  void additionToolsWidgetShow();
 };
 
 #endif // MAINWINDOW_H

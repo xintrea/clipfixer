@@ -14,7 +14,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 {
   ui->setupUi(this);
 
-  ui->additionToolsWidget->hide();
+  firstWindowH=this->frameGeometry().width();
+  firstWindowW=this->frameGeometry().height();
+
+  // Скрывается виджет отладочных инструментов
+  additionToolsWidgetHide();
 
   formatFileName="formats.txt";
   readFormats();
@@ -221,18 +225,24 @@ void MainWindow::on_closeButton_clicked()
 }
 
 
+void MainWindow::additionToolsWidgetHide()
+{
+  ui->additionToolsWidget->hide();
+  this->resize(1,1);
+}
+
+
+void MainWindow::additionToolsWidgetShow()
+{
+  ui->additionToolsWidget->show();
+  this->resize(firstWindowH, firstWindowW);
+}
+
+
 void MainWindow::on_additionToolsButton_clicked()
 {
   if(ui->additionToolsWidget->isVisible())
-  {
-    ui->additionToolsWidget->hide();
-
-    this->resize(1,1);
-  }
+    additionToolsWidgetHide();
   else
-  {
-    ui->additionToolsWidget->show();
-
-    // this->resize(1,1);
-  }
+    additionToolsWidgetShow();
 }
