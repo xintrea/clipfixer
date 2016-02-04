@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 {
   ui->setupUi(this);
 
+  ui->additionToolsWidget->hide();
+
   formatFileName="formats.txt";
   readFormats();
 
@@ -182,7 +184,7 @@ void MainWindow::on_processingButton_clicked()
   //   table->removeRows(1, 1); // Приходится делать цикл, так как removeRows(1, startTableRows-1) некорректно работает при rowspan
 
   // Предыдущее действие только избавило от rowspan, но не удалило строки
-  // Однако следующее удаление строк приводит к сегфолту widows-библиотеки, которое не отлавливается Qt дебаггером
+  // Однако следующее удаление строк приводит к сегфолту windows-библиотеки, которое не отлавливается Qt дебаггером
   // table->removeRows(1, startTableRows-1);
 
   QString resultHTML=doc.toHtml();
@@ -210,4 +212,22 @@ void MainWindow::on_currentDataFormatComboBox_currentTextChanged(const QString &
   // QMessageBox msgBox;
   // msgBox.setText("Установлен новый формат "+currentFormat);
   // msgBox.exec();
+}
+
+void MainWindow::on_translateBufferButton_clicked()
+{
+
+}
+
+void MainWindow::on_closeButton_clicked()
+{
+  exit(0);
+}
+
+void MainWindow::on_additionToolsButton_clicked()
+{
+  if(ui->additionToolsWidget->isVisible())
+    ui->additionToolsWidget->hide();
+  else
+    ui->additionToolsWidget->show();
 }

@@ -24,6 +24,12 @@ private slots:
 
   void on_currentDataFormatComboBox_currentTextChanged(const QString &arg1);
 
+  void on_translateBufferButton_clicked();
+
+  void on_closeButton_clicked();
+
+  void on_additionToolsButton_clicked();
+
 private:
   Ui::MainWindow *ui;
 
